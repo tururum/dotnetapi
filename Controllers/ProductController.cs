@@ -22,7 +22,7 @@ namespace dotnetapi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _productService.getProducts();
+            return await _productService.GetProducts();
         }
 
     }
