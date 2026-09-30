@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dotnetapi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1c12b239a9abbe84825a9196b8bc7527ab639fa")]
 [assembly: System.Reflection.AssemblyProductAttribute("dotnetapi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dotnetapi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
