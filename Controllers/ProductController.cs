@@ -1,7 +1,6 @@
 
 using dotnetapi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using dotnetapi.Services;
 
 namespace dotnetapi.Controllers
@@ -23,6 +22,16 @@ namespace dotnetapi.Controllers
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             return await _productService.GetProducts();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductById(int id){
+          return await _productService.GetProductById(id );
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Product>> CreateProduct(Product product){
+          return await _productService.CreateProduct(product);
         }
 
     }
