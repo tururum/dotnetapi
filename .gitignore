@@ -1,0 +1,70 @@
+Build
+
+[Bb]in/
+[Oo]bj/
+
+Visual Studio
+
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+Rider / JetBrains
+
+.idea/
+*.sln.iml
+
+NuGet
+
+packages/
+*.nupkg
+*.snupkg
+
+Test results
+
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+
+Coverage
+
+coverage/
+.coverage
+*.coveragexml
+
+Logs
+
+*.log
+
+ASP.NET
+
+wwwroot/lib/
+
+User-specific settings
+
+appsettings.Local.json
+appsettings.*.Local.json
+
+Environment variables / secrets
+
+.env
+.env.*
+!.env.example
+
+OS files
+
+.DS_Store
+Thumbs.db
+
+Temporary files
+
+*.tmp
+*.temp
+
+Generated files
+
+Generated/
+Artifacts/

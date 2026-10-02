@@ -33,6 +33,15 @@ namespace dotnetapi.Controllers
         public async Task<ActionResult<Product>> CreateProduct(Product product){
           return await _productService.CreateProduct(product);
         }
+          
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Product>> UpdateProduct([FromRoute]int id, Product product){
+          return await _productService.EditProduct(id, product);
+        }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteProduct(int id){
+          return await _productService.DeleteProduct(id);
+        }
     }
 }
