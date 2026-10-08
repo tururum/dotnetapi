@@ -4,11 +4,10 @@ namespace dotnetapi.Models
 {
     public class Category
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
 
         [JsonIgnore]
-        public ICollection<Product> Products { get; set; } = new List<Product>();
-    }
+        public ICollection<Product> Products { get; set; } = new List<Product>(); }
 }

@@ -1,47 +1,33 @@
-
 using dotnetapi.Models;
-using Microsoft.AspNetCore.Mvc;
 using dotnetapi.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace dotnetapi.Controllers
-{
+namespace dotnetapi.Controllers{
     [ApiController]
-    [Route("api/[controller]")]
-    public class ProductController : ControllerBase
-    {
-        private readonly ProductService _productService;
+    [Route("api/[Controller]")]
+  public class ProductController : ControllerBase{
+    public readonly ProductService _service;
+
+    public ProductController(ProductService service) => _service = service;
 
 
-        public ProductController(ProductService productService)
-        {
-            _productService = productService;
-        }
-
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-        {
-            return await _productService.GetProducts();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProductById(int id){
-          return await _productService.GetProductById(id );
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct(Product product){
-          return await _productService.CreateProduct(product);
-        }
-          
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Product>> UpdateProduct([FromRoute]int id, Product product){
-          return await _productService.EditProduct(id, product);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteProduct(int id){
-          return await _productService.DeleteProduct(id);
-        }
+    [HttpPost]
+    public async Task<ActionResult<Product>> crearProducto(Product product){
+     try
+     {
+          var created = await _service.CrearProductoAsync(product);
+          return Created($"/api/product/{created.Id}", created);
+     }
+     catch (ArgumentException ex)
+     {
+         return BadRequest(new { message = ex.Message });
+     }
     }
+
+    [HttpGet]
+    public async Task<ActionResult<List<Product>>> ListarProductos(){
+        return  await _service.ListarProductos();
+    }
+
+  }
 }

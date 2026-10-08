@@ -2,12 +2,14 @@ using dotnetapi.Context;
 using dotnetapi.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -17,6 +19,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<ProductService>();
 
 builder.Services.AddScoped<CategoryService>();
+
+builder.Services.AddScoped<InsumoService>();
+
+builder.Services.AddScoped<SaleService>();
 
 var app = builder.Build();
 

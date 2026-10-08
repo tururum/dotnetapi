@@ -1,0 +1,23 @@
+name: postProduct
+description: Crear productos
+method: POST
+url: $SERVER/api/product
+body:
+  content: |-
+    {
+      "Name": "Banderilla Prueba",
+      "Price": 150,
+      "Code": "BANPRUEBA",
+      "CategoryId": 1,
+      "Tipo": 1,
+      "Recetas": [
+        {
+          "InsumoId": 2,
+          "Cantidad": 3
+        }
+      ]
+    }
+  content_type: application/json
+headers:
+- name: content-type
+  value: application/json

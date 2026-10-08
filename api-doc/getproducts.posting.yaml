@@ -1,0 +1,3 @@
+name: GetProducts
+description: Listar Productos
+url: $SERVER/api/product

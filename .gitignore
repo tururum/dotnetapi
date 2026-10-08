@@ -1,70 +1,54 @@
-Build
+# Compilación / outputs de .NET
+[Bb]in/
+[Oo]bj/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+Generated/
+*.trx
 
-[Bb]in/*
-[Oo]bj/*
-
-Visual Studio
-
+# Visual Studio
 .vs/
-.vscode/
-*.user
 *.suo
+*.user
 *.userosscache
 *.sln.docstates
 
-Rider / JetBrains
-
+# VS Code / Rider / JetBrains
+.vscode/
 .idea/
 *.sln.iml
 
-NuGet
-
+# NuGet
 packages/
 *.nupkg
 *.snupkg
 
-Test results
-
-TestResults/
+# Pruebas y cobertura
 [Tt]est[Rr]esult*/
-*.trx
-
-Coverage
-
+TestResults/
 coverage/
 .coverage
 *.coveragexml
 
-Logs
-
-*.log
-
-ASP.NET
-
+# ASP.NET
 wwwroot/lib/
 
-User-specific settings
-
+# Configuración local y secretos
 appsettings.Local.json
 appsettings.*.Local.json
-
-Environment variables / secrets
-
+*.Local.json
 .env
 .env.*
 !.env.example
+.harlequin.toml
 
-OS files
-
+# Archivos del sistema
 .DS_Store
 Thumbs.db
 
-Temporary files
-
+# Temporales
 *.tmp
 *.temp
-
-Generated files
-
-Generated/
-Artifacts/
+*.swp
