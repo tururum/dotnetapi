@@ -1,0 +1,3 @@
+name: getSales
+description: listar ventas
+url: $SERVER/api/sale

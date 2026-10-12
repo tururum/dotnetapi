@@ -1,0 +1,19 @@
+SELECT
+    p.Id            AS ProductoId,
+    p.Code          AS ProductoCode,
+    p.Name          AS Producto,
+    c.Name          AS Categoria,
+    p.Price         AS PrecioVenta,
+    p.StockActual,
+    CASE p.Tipo WHEN 0 THEN 'SIMPLE' ELSE 'RECETA' END AS Tipo,
+    p.Activo,
+    r.Id            AS RecetaId,
+    i.Codigo        AS InsumoCodigo,
+    i.Name          AS Insumo,
+    i.UnidadMedida,
+    r.Cantidad      AS CantidadRequerida
+FROM Products p
+LEFT JOIN Categories c ON c.Id = p.CategoryId
+LEFT JOIN Recetas r    ON r.ProductId = p.Id
+LEFT JOIN Insumos i    ON i.Id = r.InsumoId
+ORDER BY p.Name, i.Name;

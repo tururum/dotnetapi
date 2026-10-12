@@ -1,0 +1,4 @@
+name: anularVenta
+description: anular venta
+method: POST
+url: $SERVER/api/sale/VTA-20261008115402/anular

@@ -1,0 +1,2 @@
+name: getBajoStock
+url: $SERVER/api/inventory/lowstock

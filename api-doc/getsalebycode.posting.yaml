@@ -1,0 +1,3 @@
+name: getSaleByCode
+description: listar venta por codigo
+url: $SERVER/api/sale/VTA-20261008115402

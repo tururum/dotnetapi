@@ -15,6 +15,7 @@ namespace dotnetapi.Models
 
         public ProductType Tipo {get; set;} = ProductType.SIMPLE;
         public decimal StockActual {get; set;}
+        public decimal StockMinimo {get; set;}
         public bool Activo {get; set;} = true;
 
         public ICollection<Receta> Recetas {get; set;} = new List<Receta>();

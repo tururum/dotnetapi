@@ -1,0 +1,17 @@
+name: AjustarInventario
+method: POST
+url: $SERVER/api/inventory/ajuste
+body:
+  content: |-
+    {
+      "Insumos": [
+        {
+          "InsumoId": 2,
+          "Cantidad": 5
+        }
+      ]
+    }
+  content_type: application/json
+headers:
+- name: content-type
+  value: application/json

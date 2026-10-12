@@ -1,0 +1,2 @@
+name: getproductId
+url: $SERVER/api/product/3

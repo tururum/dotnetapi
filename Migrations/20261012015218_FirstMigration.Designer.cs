@@ -12,8 +12,8 @@ using dotnetapi.Context;
 namespace dotnetapi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261005225759_FixedDetalleVentaProductIdLong")]
-    partial class FixedDetalleVentaProductIdLong
+    [Migration("20261012015218_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,68 @@ namespace dotnetapi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("dotnetapi.Models.Compra", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CodigoCompra")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodigoCompra")
+                        .IsUnique();
+
+                    b.ToTable("Compras");
+                });
+
+            modelBuilder.Entity("dotnetapi.Models.DetalleCompra", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Cantidad")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("CompraId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("InsumoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompraId");
+
+                    b.HasIndex("InsumoId");
+
+                    b.ToTable("DetalleCompras");
                 });
 
             modelBuilder.Entity("dotnetapi.Models.DetalleVenta", b =>
@@ -85,6 +147,9 @@ namespace dotnetapi.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("ActualStock")
                         .HasColumnType("decimal(18,2)");
@@ -168,13 +233,13 @@ namespace dotnetapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecioVenta")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("StockActual")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("StockMinimo")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Tipo")
@@ -247,6 +312,25 @@ namespace dotnetapi.Migrations
                     b.ToTable("Ventas");
                 });
 
+            modelBuilder.Entity("dotnetapi.Models.DetalleCompra", b =>
+                {
+                    b.HasOne("dotnetapi.Models.Compra", "Compra")
+                        .WithMany("Detalles")
+                        .HasForeignKey("CompraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("dotnetapi.Models.Insumo", "Insumo")
+                        .WithMany()
+                        .HasForeignKey("InsumoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Compra");
+
+                    b.Navigation("Insumo");
+                });
+
             modelBuilder.Entity("dotnetapi.Models.DetalleVenta", b =>
                 {
                     b.HasOne("dotnetapi.Models.Product", "Product")
@@ -299,6 +383,11 @@ namespace dotnetapi.Migrations
             modelBuilder.Entity("dotnetapi.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("dotnetapi.Models.Compra", b =>
+                {
+                    b.Navigation("Detalles");
                 });
 
             modelBuilder.Entity("dotnetapi.Models.Product", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace dotnetapi.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,22 @@ namespace dotnetapi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Compras",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CodigoCompra = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Compras", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Insumos",
                 columns: table => new
                 {
@@ -36,6 +52,7 @@ namespace dotnetapi.Migrations
                     ActualStock = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UnidadMedida = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Activo = table.Column<bool>(type: "bit", nullable: false),
                     StockMinimo = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -88,8 +105,8 @@ namespace dotnetapi.Migrations
                     Code = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     Tipo = table.Column<int>(type: "int", nullable: false),
-                    PrecioVenta = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StockActual = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StockMinimo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Activo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -104,14 +121,42 @@ namespace dotnetapi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DetalleCompras",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompraId = table.Column<long>(type: "bigint", nullable: false),
+                    InsumoId = table.Column<long>(type: "bigint", nullable: false),
+                    Cantidad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PrecioUnitario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetalleCompras", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DetalleCompras_Compras_CompraId",
+                        column: x => x.CompraId,
+                        principalTable: "Compras",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DetalleCompras_Insumos_InsumoId",
+                        column: x => x.InsumoId,
+                        principalTable: "Insumos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DetalleVentas",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VentaId = table.Column<long>(type: "bigint", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    ProductId1 = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Cantidad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PrecioUnitario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
@@ -120,8 +165,8 @@ namespace dotnetapi.Migrations
                 {
                     table.PrimaryKey("PK_DetalleVentas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DetalleVentas_Products_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_DetalleVentas_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -161,9 +206,25 @@ namespace dotnetapi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetalleVentas_ProductId1",
+                name: "IX_Compras_CodigoCompra",
+                table: "Compras",
+                column: "CodigoCompra",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleCompras_CompraId",
+                table: "DetalleCompras",
+                column: "CompraId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleCompras_InsumoId",
+                table: "DetalleCompras",
+                column: "InsumoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleVentas_ProductId",
                 table: "DetalleVentas",
-                column: "ProductId1");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DetalleVentas_VentaId",
@@ -209,6 +270,9 @@ namespace dotnetapi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DetalleCompras");
+
+            migrationBuilder.DropTable(
                 name: "DetalleVentas");
 
             migrationBuilder.DropTable(
@@ -216,6 +280,9 @@ namespace dotnetapi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Recetas");
+
+            migrationBuilder.DropTable(
+                name: "Compras");
 
             migrationBuilder.DropTable(
                 name: "Ventas");

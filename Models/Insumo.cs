@@ -6,6 +6,7 @@ namespace dotnetapi.Models{
     public decimal ActualStock {get; set;}
     public required String UnidadMedida {get; set;}
     public decimal Price {get; set;}
+    public bool Activo {get; set;} = true;
     public decimal StockMinimo {get; set;}
   }
 }

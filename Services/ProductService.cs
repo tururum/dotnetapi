@@ -1,4 +1,5 @@
 using dotnetapi.Context;
+using dotnetapi.DTO;
 using dotnetapi.Enums;
 using dotnetapi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +14,8 @@ namespace dotnetapi.Services
         {
             _context = context;
         }
-        
-        //CrearProducts 
+
+        //CrearProducts
         public async Task<Product> CrearProductoAsync(Product product)
         {
             if (!await _context.Categories.AnyAsync(c => c.Id == product.CategoryId))
@@ -30,6 +31,7 @@ namespace dotnetapi.Services
                 Code = product.Code,
                 CategoryId = product.CategoryId,
                 StockActual = product.StockActual,
+                StockMinimo = product.StockMinimo,
                 Tipo = product.Tipo,
                 Activo = product.Activo,
             };
@@ -70,6 +72,82 @@ namespace dotnetapi.Services
           return ProductList;
 
         }
+
+        //Listar producto por codigo
+        public async Task<Product> ListarProductoPorId(long Id){
+          var producto = await _context.Products
+            .Include(p => p.Recetas)
+            .FirstOrDefaultAsync(p => p.Id == Id);
+
+          return producto;
+        }
+
+        //Editar Producto
+
+        public async Task<EditProductDTO> EditarProducto(EditProductDTO producto, long id)
+        {
+            var foundProduct = await _context.Products
+              .Include(p => p.Recetas)
+              .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (foundProduct is null)
+                throw new KeyNotFoundException($"No existe un producto con Id {id}.");
+
+            if (producto.Name is not null) foundProduct.Name = producto.Name;
+            if (producto.Price.HasValue) foundProduct.Price = producto.Price.Value;
+            if (producto.Code is not null) foundProduct.Code = producto.Code;
+            if (producto.StockActual.HasValue && foundProduct.Tipo == ProductType.SIMPLE) foundProduct.StockActual = producto.StockActual.Value;
+            if (producto.StockMinimo.HasValue && foundProduct.Tipo == ProductType.SIMPLE) foundProduct.StockMinimo = producto.StockMinimo.Value;
+            if (producto.CategoryId.HasValue) foundProduct.CategoryId = producto.CategoryId.Value;
+
+            if (foundProduct.Tipo == ProductType.RECETA)
+            {
+                var recetasAnteriores = foundProduct.Recetas.ToList();
+
+                _context.Recetas.RemoveRange(recetasAnteriores);
+                foundProduct.Recetas.Clear();
+
+                foreach (var receta in producto.Recetas)
+                {
+                    foundProduct.Recetas.Add(new Receta
+                    {
+                        InsumoId = receta.InsumoId,
+                        Cantidad = receta.Cantidad
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return producto;
+
+
+        }
+
+
+
+        //Eliminar Producto
+        public async Task<string> EliminarProducto(long Id){
+            var foundProduct = await _context.Products
+              .FirstOrDefaultAsync(p => p.Id == Id);
+
+            if (foundProduct is not null)
+            {
+                foundProduct.Activo = false;
+
+
+                await _context.SaveChangesAsync();
+
+                return "Producto Desactivado";
+            }
+
+
+            throw new Exception("Producto no encontrado");
+
+
+        }
+
+
+
 
 
     }

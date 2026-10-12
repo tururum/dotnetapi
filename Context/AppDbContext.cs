@@ -14,6 +14,8 @@ namespace dotnetapi.Context
         public DbSet<Insumo> Insumos {get; set;}
         public DbSet<Receta> Recetas {get; set;}
         public DbSet<MovimientoInventario> Movimientos {get; set;}
+        public DbSet<Compra> Compras {get; set;}
+        public DbSet<DetalleCompra> DetalleCompras {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +30,9 @@ namespace dotnetapi.Context
 
             modelBuilder.Entity<Venta>()
               .HasIndex(v => v.CodigoVenta).IsUnique();
+
+            modelBuilder.Entity<Compra>()
+              .HasIndex(c => c.CodigoCompra).IsUnique();
 
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {

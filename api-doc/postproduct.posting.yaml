@@ -5,15 +5,15 @@ url: $SERVER/api/product
 body:
   content: |-
     {
-      "Name": "Banderilla Prueba",
+      "Name": "Chocobanano",
       "Price": 150,
       "Code": "BANPRUEBA",
       "CategoryId": 1,
       "Tipo": 1,
       "Recetas": [
         {
-          "InsumoId": 2,
-          "Cantidad": 3
+          "InsumoId": 1,
+          "Cantidad": 1
         }
       ]
     }
