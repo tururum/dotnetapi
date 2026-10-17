@@ -65,14 +65,21 @@ builder.Services.AddControllers()
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddCors(options => {
-    options.AddPolicy("PoliticaCORS", policy => {
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PoliticaCORS", policy =>
+    {
         policy.WithOrigins("http://localhost:4200",
-            "http://127.0.0.1:4200")
+            "http://localhost",
+            "http://127.0.0.1:4200",
+            "http://192.168.123.43:4200",
+            "capacitor://localhost",
+            "ionic://localhost"
+        )
         .AllowAnyHeader()
         .AllowAnyMethod();
-        });
     });
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(BuildConnectionString(builder.Configuration)));
