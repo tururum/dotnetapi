@@ -23,7 +23,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Category>> GetCategoryById(int id)
+    public async Task<ActionResult<Category>> GetCategoryById(long id)
     {
         return await _categoryService.GetCategoryById(id);
     }
@@ -35,13 +35,13 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Category>> UpdateCategory([FromRoute] int id, Category category)
+    public async Task<ActionResult<Category>> UpdateCategory([FromRoute] long id, Category category)
     {
         return await _categoryService.EditCategory(id, category);
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteCategory(int id)
+    public async Task<ActionResult<bool>> DeleteCategory(long id)
     {
         return await _categoryService.DeleteCategory(id);
     }

@@ -19,7 +19,7 @@ public class CategoryService
         return await _context.Categories.ToListAsync();
     }
 
-    public async Task<Category> GetCategoryById(int id)
+    public async Task<Category> GetCategoryById(long id)
     {
         var category = await _context.Categories.FindAsync(id);
         if (category == null)
@@ -36,7 +36,7 @@ public class CategoryService
         return category;
     }
 
-    public async Task<Category> EditCategory(int id, Category category)
+    public async Task<Category> EditCategory(long id, Category category)
     {
         var existingCategory = await _context.Categories.FindAsync(id);
         if (existingCategory == null)
@@ -49,7 +49,7 @@ public class CategoryService
         return existingCategory;
     }
 
-    public async Task<bool> DeleteCategory(int id)
+    public async Task<bool> DeleteCategory(long id)
     {
         var category = await _context.Categories.FindAsync(id);
         if (category == null)
