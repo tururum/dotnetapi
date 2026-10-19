@@ -1,5 +1,6 @@
 
 using dotnetapi.Context;
+using dotnetapi.DTO;
 using dotnetapi.Enums;
 using dotnetapi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -193,7 +194,20 @@ namespace dotnetapi.Services
                 throw;
             }
         }
-    }
+    
 
-        //Detalle de ventas
+        //Detalle de venta por codigo
+        public async Task<List<DetalleVentaVistaModel>> DettallesVenta(string CodigoVenta)
+        {
+            var Detalles = await _context.DetalleVentaVistaModel
+                            .Where(dv => dv.CodigoVenta == CodigoVenta)
+                            .AsNoTracking()
+                            .ToListAsync();
+
+
+
+            return Detalles;    
+        }
+
+    }
 }

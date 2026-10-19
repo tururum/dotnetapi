@@ -1,3 +1,4 @@
+using dotnetapi.DTO;
 using dotnetapi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,8 @@ namespace dotnetapi.Context
         public DbSet<Compra> Compras {get; set;}
         public DbSet<DetalleCompra> DetalleCompras {get; set;}
 
+        public DbSet<DetalleVentaVistaModel> DetalleVentaVistaModel {get; set;}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
@@ -33,6 +36,10 @@ namespace dotnetapi.Context
 
             modelBuilder.Entity<Compra>()
               .HasIndex(c => c.CodigoCompra).IsUnique();
+
+            modelBuilder.Entity<DetalleVentaVistaModel>()
+            .HasNoKey()
+            .ToView("vw_DetalleVentas");
 
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {

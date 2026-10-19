@@ -4,7 +4,7 @@ namespace dotnetapi.DTO;
 
 public class DetalleVentaVistaModel
 {
-    public int ID {get; set;}
+    public long ID {get; set;}
 
     public String CodigoVenta {get;set;}
 
@@ -15,5 +15,13 @@ public class DetalleVentaVistaModel
     public decimal DetallePrecioUnitario {get; set;}
     public decimal DetalleSubTotal {get; set;}
     
+    public String Producto {get; set;}
+
+    public String CodigoProducto {get; set;}
+
+    public String CategoriaProducto {get; set;}
+
+    public String InsumoNombre {get; set;}
+    public decimal InsumoCantidadReceta {get; set;}
 
 }

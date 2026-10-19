@@ -60,5 +60,13 @@ namespace dotnetapi.Controllers
 
             return Ok(new { message = resultado });
         }
+
+        [HttpGet("vista/{codigo}")]
+        public async Task<ActionResult<List<DetalleVentaVistaModel>>> DetalleVenta([FromRoute] string codigo)
+        {
+            var resultado = await _service.DettallesVenta(codigo);
+
+            return Ok(resultado);
+        }
     }
 }

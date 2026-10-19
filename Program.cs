@@ -9,7 +9,9 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Env.Load();
+// Carga el .env desde la raíz de la aplicación, independientemente del directorio
+// desde el que se ejecute el proceso.
+Env.Load(Path.Combine(builder.Environment.ContentRootPath, ".env"));
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -36,8 +38,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException(
+            "No se encontró ConnectionStrings:DefaultConnection. Revisa el archivo .env.")));
 
 builder.Services.AddScoped<ProductService>();
 
