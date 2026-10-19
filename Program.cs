@@ -3,60 +3,15 @@ using dotnetapi.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
+using DotNetEnv;
 
-LoadDotEnv();
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-static void LoadDotEnv()
-{
-    var roots = new[] { new DirectoryInfo(Directory.GetCurrentDirectory()), new DirectoryInfo(AppContext.BaseDirectory) };
-    foreach (var root in roots)
-    {
-        var dir = root;
-        while (dir is not null)
-        {
-            var path = Path.Combine(dir.FullName, ".env");
-            if (!File.Exists(path))
-            {
-                dir = dir.Parent;
-                continue;
-            }
+Env.Load();
 
-            foreach (var line in File.ReadLines(path))
-            {
-                var entry = line.Trim();
-                if (entry.Length == 0 || entry.StartsWith('#')) continue;
-                if (entry.StartsWith("export ")) entry = entry[7..].Trim();
-
-                var separator = entry.IndexOf('=');
-                if (separator <= 0) continue;
-
-                var key = entry[..separator].Trim();
-                var value = entry[(separator + 1)..].Trim();
-                if (value.Length >= 2 && (value[0] == '"' || value[0] == '\'') && value[^1] == value[0])
-                    value = value[1..^1];
-
-                if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(key)))
-                    Environment.SetEnvironmentVariable(key, value);
-            }
-            return;
-        }
-    }
-}
-
-static string BuildConnectionString(IConfiguration configuration)
-{
-    var connectionString = configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
-    foreach (var key in new[] { "DB_USER", "DB_PASSWORD", "DB_NAME" })
-        connectionString = connectionString.Replace($"{{{key}}}", Environment.GetEnvironmentVariable(key) ?? string.Empty);
-
-    if (connectionString.Contains('{'))
-        throw new InvalidOperationException("Faltan valores en .env: define DB_USER, DB_PASSWORD y DB_NAME.");
-
-    return connectionString;
-}
-
+builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 
@@ -82,7 +37,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(BuildConnectionString(builder.Configuration)));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ProductService>();
 

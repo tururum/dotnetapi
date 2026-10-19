@@ -12,6 +12,8 @@ namespace dotnetapi.Services
 
         public SaleService(AppDbContext context) => _context = context;
 
+        //Crear Venta
+
         public async Task<Venta> CrearVentaAsync(List<(long ProductId, decimal cantidad)> items)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -192,4 +194,6 @@ namespace dotnetapi.Services
             }
         }
     }
+
+        //Detalle de ventas
 }

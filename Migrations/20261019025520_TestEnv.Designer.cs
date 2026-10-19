@@ -12,8 +12,8 @@ using dotnetapi.Context;
 namespace dotnetapi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261012015218_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20261019025520_TestEnv")]
+    partial class TestEnv
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
